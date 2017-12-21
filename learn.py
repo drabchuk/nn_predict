@@ -205,8 +205,8 @@ def label_data():
     log_price = np.log(p)
     #plt.plot(p)
     topology = [11, 100, 100, 50, 20, 2]
-    nn = NeuralNet(topology)
-    #nn = nn_factory.read('net_11_7d')
+    #nn = NeuralNet(topology)
+    nn = nn_factory.read('net_11_7d')
     #index = comp_index_matrix(p)
     #b, s = comp_b_s(nn, p, index)
     #plt.plot(index[0,:])
