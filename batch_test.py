@@ -18,6 +18,9 @@ def feature_transform(p, log_price, i):
     ma_160 = std_moving_average(p, log_price, i, 160)
     ma_320 = std_moving_average(p, log_price, i, 320)
     ma_640 = std_moving_average(p, log_price, i, 640)
+    ma_1280 = std_moving_average(p, log_price, i, 1280)
+    ma_2560 = std_moving_average(p, log_price, i, 2560)
+    ma_5120 = std_moving_average(p, log_price, i, 5120)
     features = np.vstack((raw,
                          ma_10,
                          ma_20,
@@ -26,8 +29,11 @@ def feature_transform(p, log_price, i):
                          ma_160,
                          ma_320,
                          ma_640,
+                         ma_1280,
+                         ma_2560,
+                         ma_5120,
                           ))
-    features = (features - log_price[i, 0]) * 200.0
+    features = (features - log_price[i, 0]) * 400.0
     return features
 
 DATA_FROM, DATA_TO = 0, 100000
@@ -38,7 +44,7 @@ nn = nn_factory.read('net_batch_32')
 p = excel_reader.get_data(DATA_FROM, DATA_TO, 'D:\python\projdata\data\\1m_short.xlsx')
 #index = comp_index_matrix(p)
 log_price = np.log(p)
-inf_prices = 100
+inf_prices = 181
 print('TEST')
 wallet_btc = 1.0
 wallet_usd = 0.0
@@ -53,14 +59,14 @@ buy_btc = np.zeros((TRAINING_LENGTH, 1))
 #treshhold = random.random()
 #treshhold_buy = 0.994
 #treshhold_sell = 0.915
-treshhold_buy = 0.8
-treshhold_sell = 0.8
+treshhold_buy = 0.6
+treshhold_sell = 0.915
 upper_bound = 0.3
 lower_bound = 0.2
 treshhold = 0.25
 price_buy = 1.0
 price_sell = 0.0
-for sample in range(640, TRAINING_LENGTH - inf_prices):
+for sample in range(5120, TRAINING_LENGTH - inf_prices):
     #features = index[sample - inf_prices:sample, sample] * 20
     features = feature_transform(p, log_price, sample)
     a = nn.forward(features)
